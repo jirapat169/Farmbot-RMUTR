@@ -1,1 +1,40 @@
-/* You can add global styles to this file, and also import other style files */
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+html,
+body.swal2-height-auto {
+  all: unset !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: unset !important;
+}
+
+.material-icons {
+  font-family: "Material Icons" !important;
+}
+
+.cdk-global-overlay-wrapper,
+.cdk-overlay-container {
+  z-index: 99999 !important;
+}
+
+.box-padding {
+  padding: 15px;
+}
+
+mat-form-field {
+  width: 100%;
+}

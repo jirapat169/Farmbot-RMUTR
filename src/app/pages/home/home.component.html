@@ -1,0 +1,263 @@
+<div class="box-padding">
+  <h2 class="mb-4">หน้าหลัก</h2>
+  <div class="row">
+    <div class="col-xl-4 mb-3">
+      <mat-card style="height: 150px; overflow: auto">
+        <div
+          class="row {{
+            rpiIsOnline ? 'rpi_online' : 'rpi_offline'
+          }} box-padding"
+        >
+          <div class="col-4">
+            <div class="text-center">
+              <img
+                id="pi_logo"
+                [src]="service.env.baseHref + '/assets/pi.png'"
+                alt="pi_logo"
+                width="80px"
+                height="80px"
+              />
+            </div>
+          </div>
+          <div class="col-8 text-right">
+            <h2>Raspberry Pi</h2>
+            <h4 class="text-{{ rpiIsOnline ? 'success' : 'danger' }}">
+              {{ rpiIsOnline ? "Online" : "Offline" }}
+            </h4>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+
+    <div class="col-xl-4 mb-3">
+      <mat-card style="height: 150px; overflow: auto">
+        <div
+          class="row {{
+            arduinoIsStatus ? 'arduino_online' : 'arduino_offline'
+          }} box-padding"
+        >
+          <div class="col-4">
+            <div class="text-center">
+              <img
+                id="arduino_logo"
+                [src]="service.env.baseHref + '/assets/arduino.png'"
+                alt="arduino_logo"
+                width="80px"
+                height="80px"
+              />
+            </div>
+          </div>
+          <div class="col-8 text-right">
+            <h2>Arduino</h2>
+            <p class="text-muted">
+              {{ arduinoPort }}
+            </p>
+            <h4 class="text-{{ arduinoIsStatus ? 'success' : 'danger' }}">
+              {{ arduinoIsStatus ? "Connected" : "Disconnect" }}
+            </h4>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+
+    <div class="col-xl-4 mb-3">
+      <mat-card style="height: 150px; overflow: auto">
+        <h2 style="padding-bottom: 20px">เปลี่ยนพอร์ต Arduino</h2>
+        <mat-form-field>
+          <mat-label>พอร์ต</mat-label>
+          <mat-select [value]="arduinoPort" (valueChange)="portChange($event)">
+            <mat-option *ngFor="let x of listSerialPort" [value]="x.path">
+              {{ x.path
+              }}{{ x.manufacturer ? " (" + x.manufacturer + ") " : "" }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-card>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xl-4 mb-3">
+      <mat-card style="height: 500px; overflow: auto">
+        <div class="row">
+          <div class="col-9">
+            <h2 class="mb-3">Arduino Serial Monitor</h2>
+          </div>
+          <div class="col-3 text-right">
+            <button type="button" class="btn btn-link" (click)="clearSerial()">
+              Clear
+            </button>
+          </div>
+        </div>
+        <div class="container_c mb-3">
+          <div class="chat-container">
+            <div class="message" *ngFor="let x of listMessage">
+              <div class="datetime">
+                <b>{{ x.status == "write" ? "Me" : "Arduino" }}</b>
+              </div>
+              <p>{{ x.msg }}</p>
+            </div>
+          </div>
+        </div>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Send</mat-label>
+          <input matInput (keyup.enter)="serialWrite($event)" />
+        </mat-form-field>
+      </mat-card>
+    </div>
+
+    <div class="col-xl-8 mb-3">
+      <mat-card style="height: 500px; overflow: auto">
+        <h2 class="mb-3">Manual Test (GRBL)</h2>
+
+        <div class="text-center">
+          <h4>Move Amount (mm)</h4>
+          <div class="btn-group" role="group" aria-label="Basic example">
+            <button
+              type="button"
+              class="btn btn-outline-primary {{
+                manualTest.moveAmount == 1 ? 'active' : ''
+              }}"
+              style="width: 80px"
+              (click)="manualTest.moveAmount = 1"
+            >
+              1
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline-primary {{
+                manualTest.moveAmount == 10 ? 'active' : ''
+              }}"
+              style="width: 80px"
+              (click)="manualTest.moveAmount = 10"
+            >
+              10
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline-primary {{
+                manualTest.moveAmount == 100 ? 'active' : ''
+              }}"
+              style="width: 80px"
+              (click)="manualTest.moveAmount = 100"
+            >
+              100
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline-primary {{
+                manualTest.moveAmount == 1000 ? 'active' : ''
+              }}"
+              style="width: 80px"
+              (click)="manualTest.moveAmount = 1000"
+            >
+              1000
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline-primary {{
+                manualTest.moveAmount == 10000 ? 'active' : ''
+              }}"
+              style="width: 80px"
+              (click)="manualTest.moveAmount = 10000"
+            >
+              10000
+            </button>
+          </div>
+        </div>
+
+        <div class="text-center" style="margin-top: 50px; min-width: 500px">
+          <div class="row mb-3">
+            <div class="col-1"></div>
+            <div class="col-1">
+              <button
+                type="button"
+                class="btn btn-outline-primary"
+                style="width: 45px"
+                (click)="setManual({ axis: 'home' })"
+              >
+                <i class="fas fa-home"></i>
+              </button>
+            </div>
+            <div class="col-2"></div>
+            <div class="col-1">
+              <button
+                type="button"
+                class="btn btn-outline-primary"
+                style="width: 45px"
+                (click)="setManual({ axis: '+y' })"
+              >
+                <i class="fas fa-arrow-up"></i>
+              </button>
+            </div>
+            <div class="col-1"></div>
+            <div class="col-1"></div>
+            <div class="col-1">
+              <button
+                type="button"
+                class="btn btn-outline-primary"
+                style="width: 45px"
+                (click)="setManual({ axis: '+z' })"
+              >
+                <i class="fas fa-arrow-up"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-1"></div>
+            <div class="col-2"></div>
+            <div class="col-1">
+              <button
+                type="button"
+                class="btn btn-outline-primary"
+                style="width: 45px"
+                (click)="setManual({ axis: '-x' })"
+              >
+                <i class="fas fa-arrow-left"></i>
+              </button>
+            </div>
+            <div class="col-1">
+              <button
+                type="button"
+                class="btn btn-outline-primary"
+                style="width: 45px"
+                (click)="setManual({ axis: '-y' })"
+              >
+                <i class="fas fa-arrow-down"></i>
+              </button>
+            </div>
+            <div class="col-1">
+              <button
+                type="button"
+                class="btn btn-outline-primary"
+                style="width: 45px"
+                (click)="setManual({ axis: '+x' })"
+              >
+                <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+            <div class="col-1"></div>
+            <div class="col-1">
+              <button
+                type="button"
+                class="btn btn-outline-primary"
+                style="width: 45px"
+                (click)="setManual({ axis: '-z' })"
+              >
+                <i class="fas fa-arrow-down"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: 50px">
+          <h3>X : {{ this.manualTest.x }}</h3>
+          <h3>Y : {{ this.manualTest.y }}</h3>
+          <h3>Z : {{ this.manualTest.z }}</h3>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+</div>
