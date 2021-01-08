@@ -138,7 +138,7 @@ export class HomeComponent implements OnInit {
         data.axis != 'home'
           ? data.axis.split('')[1].toUpperCase() +
             this.manualTest[data.axis.split('')[1]]
-          : 'G10 X0 Y0 Z0'
+          : 'X0 Y0 Z0'
       }`,
       update_time: new Date().getTime(),
     });
