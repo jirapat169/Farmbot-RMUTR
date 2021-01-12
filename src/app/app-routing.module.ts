@@ -13,6 +13,13 @@ const routes: Routes = [
           import('./pages/home/home.module').then((m) => m.HomeModule),
       },
       {
+        path: 'grow-vegetable',
+        loadChildren: () =>
+          import('./pages/grow-vegetable/grow-vegetable.module').then(
+            (m) => m.GrowVegetableModule
+          ),
+      },
+      {
         path: 'setting',
         loadChildren: () =>
           import('./pages/setting/setting.module').then((m) => m.SettingModule),

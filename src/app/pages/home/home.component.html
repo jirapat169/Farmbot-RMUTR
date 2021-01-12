@@ -33,7 +33,11 @@
       <mat-card style="height: 150px; overflow: auto">
         <div
           class="row {{
-            arduinoIsStatus ? 'arduino_online' : 'arduino_offline'
+            arduinoIsStatus
+              ? rpiIsOnline
+                ? 'arduino_online'
+                : 'arduino_offline'
+              : 'arduino_offline'
           }} box-padding"
         >
           <div class="col-4">
@@ -52,8 +56,22 @@
             <p class="text-muted">
               {{ arduinoPort }}
             </p>
-            <h4 class="text-{{ arduinoIsStatus ? 'success' : 'danger' }}">
-              {{ arduinoIsStatus ? "Connected" : "Disconnect" }}
+            <h4
+              class="text-{{
+                arduinoIsStatus
+                  ? rpiIsOnline
+                    ? 'success'
+                    : 'danger'
+                  : 'danger'
+              }}"
+            >
+              {{
+                arduinoIsStatus
+                  ? rpiIsOnline
+                    ? "Connected"
+                    : "Disconnect"
+                  : "Disconnect"
+              }}
             </h4>
           </div>
         </div>
@@ -108,7 +126,7 @@
     </div>
 
     <div class="col-xl-8 mb-3">
-      <mat-card style="height: 500px; overflow: auto">
+      <mat-card style="height: 500px; overflow-y: auto">
         <h2 class="mb-3">Manual Test (GRBL)</h2>
 
         <div class="text-center">
@@ -167,91 +185,93 @@
           </div>
         </div>
 
-        <div class="text-center" style="margin-top: 50px; min-width: 500px">
-          <div class="row mb-3">
-            <div class="col-1"></div>
-            <div class="col-1">
-              <button
-                type="button"
-                class="btn btn-outline-primary"
-                style="width: 45px"
-                (click)="setManual({ axis: 'home' })"
-              >
-                <i class="fas fa-home"></i>
-              </button>
+        <div style="margin-top: 50px; overflow-x: auto">
+          <div class="text-center box-padding" style="min-width: 500px">
+            <div class="row mb-3">
+              <div class="col-1"></div>
+              <div class="col-1"></div>
+              <div class="col-2"></div>
+              <div class="col-1">
+                <button
+                  type="button"
+                  class="btn btn-outline-primary"
+                  style="width: 45px"
+                  (click)="setManual({ axis: '+y' })"
+                >
+                  <i class="fas fa-arrow-up"></i>
+                </button>
+              </div>
+              <div class="col-1"></div>
+              <div class="col-1"></div>
+              <div class="col-1">
+                <button
+                  type="button"
+                  class="btn btn-outline-primary"
+                  style="width: 45px"
+                  (click)="setManual({ axis: '+z' })"
+                >
+                  <i class="fas fa-arrow-up"></i>
+                </button>
+              </div>
             </div>
-            <div class="col-2"></div>
-            <div class="col-1">
-              <button
-                type="button"
-                class="btn btn-outline-primary"
-                style="width: 45px"
-                (click)="setManual({ axis: '+y' })"
-              >
-                <i class="fas fa-arrow-up"></i>
-              </button>
-            </div>
-            <div class="col-1"></div>
-            <div class="col-1"></div>
-            <div class="col-1">
-              <button
-                type="button"
-                class="btn btn-outline-primary"
-                style="width: 45px"
-                (click)="setManual({ axis: '+z' })"
-              >
-                <i class="fas fa-arrow-up"></i>
-              </button>
-            </div>
-          </div>
 
-          <div class="row">
-            <div class="col-1"></div>
-            <div class="col-2"></div>
-            <div class="col-1">
-              <button
-                type="button"
-                class="btn btn-outline-primary"
-                style="width: 45px"
-                (click)="setManual({ axis: '-x' })"
-              >
-                <i class="fas fa-arrow-left"></i>
-              </button>
-            </div>
-            <div class="col-1">
-              <button
-                type="button"
-                class="btn btn-outline-primary"
-                style="width: 45px"
-                (click)="setManual({ axis: '-y' })"
-              >
-                <i class="fas fa-arrow-down"></i>
-              </button>
-            </div>
-            <div class="col-1">
-              <button
-                type="button"
-                class="btn btn-outline-primary"
-                style="width: 45px"
-                (click)="setManual({ axis: '+x' })"
-              >
-                <i class="fas fa-arrow-right"></i>
-              </button>
-            </div>
-            <div class="col-1"></div>
-            <div class="col-1">
-              <button
-                type="button"
-                class="btn btn-outline-primary"
-                style="width: 45px"
-                (click)="setManual({ axis: '-z' })"
-              >
-                <i class="fas fa-arrow-down"></i>
-              </button>
+            <div class="row">
+              <div class="col-1"></div>
+              <div class="col-1">
+                <button
+                  type="button"
+                  class="btn btn-outline-primary"
+                  style="width: 45px"
+                  (click)="setManual({ axis: 'home' })"
+                >
+                  <i class="fas fa-home"></i>
+                </button>
+              </div>
+              <div class="col-1"></div>
+              <div class="col-1">
+                <button
+                  type="button"
+                  class="btn btn-outline-primary"
+                  style="width: 45px"
+                  (click)="setManual({ axis: '-x' })"
+                >
+                  <i class="fas fa-arrow-left"></i>
+                </button>
+              </div>
+              <div class="col-1">
+                <button
+                  type="button"
+                  class="btn btn-outline-primary"
+                  style="width: 45px"
+                  (click)="setManual({ axis: '-y' })"
+                >
+                  <i class="fas fa-arrow-down"></i>
+                </button>
+              </div>
+              <div class="col-1">
+                <button
+                  type="button"
+                  class="btn btn-outline-primary"
+                  style="width: 45px"
+                  (click)="setManual({ axis: '+x' })"
+                >
+                  <i class="fas fa-arrow-right"></i>
+                </button>
+              </div>
+              <div class="col-1"></div>
+              <div class="col-1">
+                <button
+                  type="button"
+                  class="btn btn-outline-primary"
+                  style="width: 45px"
+                  (click)="setManual({ axis: '-z' })"
+                >
+                  <i class="fas fa-arrow-down"></i>
+                </button>
+              </div>
             </div>
           </div>
         </div>
-
         <div style="margin-top: 50px">
           <h3>X : {{ this.manualTest.x }}</h3>
           <h3>Y : {{ this.manualTest.y }}</h3>

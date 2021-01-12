@@ -14,12 +14,17 @@ export class NavigationComponent implements OnInit {
     {
       title: 'หน้าหลัก',
       path: '/home',
-      icon: '',
+      icon: 'fas fa-home',
+    },
+    {
+      title: 'ออกแบบแปลงผัก',
+      path: '/grow-vegetable',
+      icon: 'fas fa-carrot',
     },
     {
       title: 'ตั้งค่า',
       path: '/setting',
-      icon: '',
+      icon: 'fas fa-cogs',
     },
   ];
 

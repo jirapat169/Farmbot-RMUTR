@@ -1,0 +1,25 @@
+.vegetables {
+  cursor: pointer;
+}
+
+.flex-display {
+  display: flex;
+  padding: 30px;
+  border: solid 1px #0b7bff;
+  width: fit-content;
+}
+
+.tableList {
+  border: solid 1px #0b7bff;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
+
+.hovered {
+  background: #f4f4f4;
+  border-style: dashed;
+}

@@ -12,6 +12,10 @@ body.swal2-height-auto {
   all: unset !important;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 h1,
 h2,
 h3,
